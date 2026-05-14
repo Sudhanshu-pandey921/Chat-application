@@ -6,12 +6,13 @@ pool:
 
 variables:
   nodeVersion: '18.x'
-  workingDirectory: 'Chat-application\app\chat_application'
-
-
-# Build
+  workingDirectory: 'app\chat_application'
 
 stages:
+
+# ======================
+# BUILD STAGE
+# ======================
 - stage: Build
   displayName: Build Application
 
@@ -21,14 +22,12 @@ stages:
 
     steps:
 
+    - checkout: self
+
     - task: NodeTool@0
       inputs:
         versionSpec: $(nodeVersion)
       displayName: Install NodeJS
-
-    - script: |
-        dir /s package.json
-      displayName: Debug package location
 
     - script: |
         npm install
