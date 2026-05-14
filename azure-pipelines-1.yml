@@ -6,13 +6,9 @@ pool:
 
 variables:
   nodeVersion: '18.x'
-  workingDirectory: 'app\chat_application'
 
 stages:
 
-# ======================
-# BUILD STAGE
-# ======================
 - stage: Build
   displayName: Build Application
 
@@ -31,16 +27,14 @@ stages:
 
     - script: |
         npm install
-      workingDirectory: $(workingDirectory)
       displayName: Install Dependencies
 
     - script: |
         npm run build
-      workingDirectory: $(workingDirectory)
       displayName: Build React App
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)\$(workingDirectory)\build'
+        PathtoPublish: '$(System.DefaultWorkingDirectory)\build'
         ArtifactName: 'react-build'
       displayName: Publish Build Artifact
