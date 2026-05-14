@@ -1,0 +1,40 @@
+trigger:
+ - main
+
+pool:
+  name: may-pool
+
+variables:
+  nodeVersion: '18.x'
+  workingDirectory: 'app/chat_application'
+
+# Build
+
+stages:
+- stage: Build
+  displayName: Build Application
+
+  jobs:
+  - job: BuildJob
+    displayName: Build React App
+
+    steps:
+
+    - task: NodeTool@0
+      inputs:
+        versionSpec: $(nodeVersion)
+      displayName: Install NodeJS
+
+    - script: npm install
+      workingDirectory: $(workingDirectory)
+      displayName: Install Dependencies
+
+    - script: npm run build
+      workingDirectory: $(workingDirectory)
+      displayName: Build React App
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/$(workingDirectory)/build'
+        ArtifactName: 'react-build'
+      displayName: Publish Artifact
