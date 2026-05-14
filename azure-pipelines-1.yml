@@ -14,11 +14,11 @@ stages:
 
   jobs:
   - job: BuildJob
-    displayName: Build React App
 
     steps:
 
     - checkout: self
+      path: Chat-application
 
     - task: NodeTool@0
       inputs:
@@ -27,14 +27,16 @@ stages:
 
     - script: |
         npm install
+      workingDirectory: '$(Pipeline.Workspace)\Chat-application\app\chat_application'
       displayName: Install Dependencies
 
     - script: |
         npm run build
+      workingDirectory: '$(Pipeline.Workspace)\Chat-application\app\chat_application'
       displayName: Build React App
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(System.DefaultWorkingDirectory)\build'
+        PathtoPublish: '$(Pipeline.Workspace)\Chat-application\app\chat_application\build'
         ArtifactName: 'react-build'
       displayName: Publish Build Artifact
